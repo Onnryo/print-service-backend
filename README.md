@@ -7,6 +7,7 @@ sudo apt install postgresql postgresql-contrib
 sudo systemctl start postgresql.service
 ## TODO:
 - ~~DB Schema Draft~~
+    - https://dbdiagram.io/d/646efd8ddca9fb07c4bc9703
 - API Routes
     - https://stackoverflow.com/questions/25260818/rest-with-express-js-nested-router
 - User Auth & JWT
