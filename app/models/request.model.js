@@ -16,10 +16,10 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.DECIMAL(10,2),
         },
         estimated_time: {
-            type: Sequelize.TIME,
+            type: Sequelize.STRING,
         },
         total_time: {
-            type: Sequelize.TIME,
+            type: Sequelize.STRING,
         },
         status: {
             type: Sequelize.STRING,

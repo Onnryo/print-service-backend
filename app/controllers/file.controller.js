@@ -4,20 +4,29 @@ const Op = db.Sequelize.Op;
 
 // Create and Save a new File
 exports.create = (req, res) => {
-    return; /*
     // Validate request
-    if (!req.body.title) {
+    if (!req.body.name) {
         res.status(400).send({
-            message: "Content can not be empty!",
+            message: "name can not be empty!",
+        });
+        return;
+    } else if (!req.body.type) {
+        res.status(400).send({
+            message: "type can not be empty!",
+        });
+        return;
+    } else if (!req.body.requestId) {
+        res.status(400).send({
+            message: "requestId can not be empty!",
         });
         return;
     }
 
     // Create a File
     const file = {
-        title: req.body.title,
-        description: req.body.description,
-        published: req.body.published ? req.body.published : false,
+        name: req.body.name,
+        type: req.body.type,
+        requestId: req.body.requestId,
     };
 
     // Save File in the database
@@ -32,14 +41,12 @@ exports.create = (req, res) => {
                     "Some error occurred while creating the File.",
             });
         });
-    */
 };
 
 // Retrieve all Files from the database.
 exports.findAll = (req, res) => {
-    return; /*
-    const title = req.query.title;
-    var condition = title ? { title: { [Op.iLike]: `%${title}%` } } : null;
+    const name = req.query.name;
+    var condition = name ? { name: { [Op.iLike]: `%${name}%` } } : null;
 
     File.findAll({ where: condition })
         .then((data) => {
@@ -52,12 +59,10 @@ exports.findAll = (req, res) => {
                     "Some error occurred while retrieving files.",
             });
         });
-    */
 };
 
 // Find a single File with an id
 exports.findOne = (req, res) => {
-    return; /*
     const id = req.params.id;
 
     File.findByPk(id)
@@ -75,12 +80,10 @@ exports.findOne = (req, res) => {
                 message: "Error retrieving File with id=" + id,
             });
         });
-    */
 };
 
 // Update a File by the id in the request
 exports.update = (req, res) => {
-    return; /*
     const id = req.params.id;
 
     File.update(req.body, {
@@ -102,12 +105,10 @@ exports.update = (req, res) => {
                 message: "Error updating File with id=" + id,
             });
         });
-    */
 };
 
 // Delete a File with the specified id in the request
 exports.delete = (req, res) => {
-    return; /*
     const id = req.params.id;
 
     File.destroy({
@@ -129,11 +130,10 @@ exports.delete = (req, res) => {
                 message: "Could not delete File with id=" + id,
             });
         });
-    */
 };
 
-// Delete all Files from the database.
-exports.deleteAll = (req, res) => {
+// Retrieve all Parts from File
+exports.fetchParts = (req, res) => {
     return; /*
     File.destroy({
         where: {},
@@ -149,23 +149,6 @@ exports.deleteAll = (req, res) => {
                 message:
                     err.message ||
                     "Some error occurred while removing all files.",
-            });
-        });
-    */
-};
-
-// Find all published Files
-exports.findAllPublished = (req, res) => {
-    return; /*
-    File.findAll({ where: { published: true } })
-        .then((data) => {
-            res.send(data);
-        })
-        .catch((err) => {
-            res.status(500).send({
-                message:
-                    err.message ||
-                    "Some error occurred while retrieving files.",
             });
         });
     */

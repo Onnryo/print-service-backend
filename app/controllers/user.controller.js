@@ -4,25 +4,27 @@ const Op = db.Sequelize.Op;
 
 // Create and Save a new User
 exports.create = (req, res) => {
-    return; /*
     // Validate user
-    if (!req.body.title) {
+    if (!req.body.username && !req.body.email && !req.body.password) {
         res.status(400).send({
-            message: "Content can not be empty!",
+            message: "username, email, or password can not be empty!",
         });
         return;
     }
 
     // Create a User
     const user = {
-        title: req.body.title,
-        description: req.body.description,
-        published: req.body.published ? req.body.published : false,
+        username: req.body.username,
+        email: req.body.email,
+        password: req.body.password,
+        role: "USER",
+        balance: 0.0,
     };
 
     // Save User in the database
     User.create(user)
         .then((data) => {
+            //delete data.password;
             res.send(data);
         })
         .catch((err) => {
@@ -32,17 +34,16 @@ exports.create = (req, res) => {
                     "Some error occurred while creating the User.",
             });
         });
-    */
 };
 
 // Retrieve all Users from the database.
 exports.findAll = (req, res) => {
-    return; /*
-    const title = req.query.title;
-    var condition = title ? { title: { [Op.iLike]: `%${title}%` } } : null;
+    const username = req.query.username;
+    var condition = username ? { username: { [Op.iLike]: `%${username}%` } } : null;
 
     User.findAll({ where: condition })
         .then((data) => {
+            //delete data.password
             res.send(data);
         })
         .catch((err) => {
@@ -52,17 +53,16 @@ exports.findAll = (req, res) => {
                     "Some error occurred while retrieving users.",
             });
         });
-    */
 };
 
 // Find a single User with an id
 exports.findOne = (req, res) => {
-    return; /*
     const id = req.params.id;
 
     User.findByPk(id)
         .then((data) => {
             if (data) {
+                //delete data.password;
                 res.send(data);
             } else {
                 res.status(404).send({
@@ -75,12 +75,10 @@ exports.findOne = (req, res) => {
                 message: "Error retrieving User with id=" + id,
             });
         });
-    */
 };
 
 // Update a User by the id in the user
 exports.update = (req, res) => {
-    return; /*
     const id = req.params.id;
 
     User.update(req.body, {
@@ -102,12 +100,10 @@ exports.update = (req, res) => {
                 message: "Error updating User with id=" + id,
             });
         });
-    */
 };
 
 // Delete a User with the specified id in the user
 exports.delete = (req, res) => {
-    return; /*
     const id = req.params.id;
 
     User.destroy({
@@ -129,11 +125,10 @@ exports.delete = (req, res) => {
                 message: "Could not delete User with id=" + id,
             });
         });
-    */
 };
 
-// Delete all Users from the database.
-exports.deleteAll = (req, res) => {
+// Retrieve all Requests from User.
+exports.fetchRequests = (req, res) => {
     return; /*
     User.destroy({
         where: {},
@@ -149,23 +144,6 @@ exports.deleteAll = (req, res) => {
                 message:
                     err.message ||
                     "Some error occurred while removing all users.",
-            });
-        });
-    */
-};
-
-// Find all published Users
-exports.findAllPublished = (req, res) => {
-    return; /*
-    User.findAll({ where: { published: true } })
-        .then((data) => {
-            res.send(data);
-        })
-        .catch((err) => {
-            res.status(500).send({
-                message:
-                    err.message ||
-                    "Some error occurred while retrieving users.",
             });
         });
     */

@@ -4,20 +4,43 @@ const Op = db.Sequelize.Op;
 
 // Create and Save a new Request
 exports.create = (req, res) => {
-    return; /*
     // Validate request
-    if (!req.body.title) {
+    if (!req.body.title && !req.body.body) {
+        res.status(400).send({
+            message: "title or body can not be empty!",
+        });
+        return;
+    } else if (!req.body.userId) {
+        res.status(400).send({
+            message: "userId can not be empty!",
+        });
+        return;
+    }/*else if (req.body.link && isvalidurl?) {
         res.status(400).send({
             message: "Content can not be empty!",
         });
         return;
-    }
+    }*/
+
+    const estimated_cost = 0.00;
+    const total_cost = 0.00;
+    const estimated_time = "00:00:00"
+    const total_time = "00:00:00"
+    const status = "Pending";
+    const status_history = Date.now().toString() + " - Pending";
 
     // Create a Request
     const request = {
         title: req.body.title,
-        description: req.body.description,
-        published: req.body.published ? req.body.published : false,
+        body: req.body.body,
+        link: req.body.link ? req.body.link : null,
+        estimated_cost: estimated_cost,
+        total_cost: total_cost,
+        estimated_time: estimated_time,
+        total_time: total_time,
+        status: status,
+        status_history: status_history,
+        userId: req.body.userId,
     };
 
     // Save Request in the database
@@ -32,12 +55,10 @@ exports.create = (req, res) => {
                     "Some error occurred while creating the Request.",
             });
         });
-    */
 };
 
 // Retrieve all Requests from the database.
 exports.findAll = (req, res) => {
-    return; /*
     const title = req.query.title;
     var condition = title ? { title: { [Op.iLike]: `%${title}%` } } : null;
 
@@ -52,12 +73,10 @@ exports.findAll = (req, res) => {
                     "Some error occurred while retrieving requests.",
             });
         });
-    */
 };
 
 // Find a single Request with an id
 exports.findOne = (req, res) => {
-    return; /*
     const id = req.params.id;
 
     Request.findByPk(id)
@@ -75,12 +94,10 @@ exports.findOne = (req, res) => {
                 message: "Error retrieving Request with id=" + id,
             });
         });
-    */
 };
 
 // Update a Request by the id in the request
 exports.update = (req, res) => {
-    return; /*
     const id = req.params.id;
 
     Request.update(req.body, {
@@ -102,12 +119,10 @@ exports.update = (req, res) => {
                 message: "Error updating Request with id=" + id,
             });
         });
-    */
 };
 
 // Delete a Request with the specified id in the request
 exports.delete = (req, res) => {
-    return; /*
     const id = req.params.id;
 
     Request.destroy({
@@ -129,11 +144,10 @@ exports.delete = (req, res) => {
                 message: "Could not delete Request with id=" + id,
             });
         });
-    */
 };
 
-// Delete all Requests from the database.
-exports.deleteAll = (req, res) => {
+// Retrieve all Parts from Request.
+exports.fetchParts = (req, res) => {
     return; /*
     Request.destroy({
         where: {},
@@ -154,18 +168,45 @@ exports.deleteAll = (req, res) => {
     */
 };
 
-// Find all published Requests
-exports.findAllPublished = (req, res) => {
+// Retrieve all Comments from Request.
+exports.fetchComments = (req, res) => {
     return; /*
-    Request.findAll({ where: { published: true } })
-        .then((data) => {
-            res.send(data);
+    Request.destroy({
+        where: {},
+        truncate: false,
+    })
+        .then((nums) => {
+            res.send({
+                message: `${nums} Requests were deleted successfully!`,
+            });
         })
         .catch((err) => {
             res.status(500).send({
                 message:
                     err.message ||
-                    "Some error occurred while retrieving requests.",
+                    "Some error occurred while removing all requests.",
+            });
+        });
+    */
+};
+
+// Retrieve all Files from Request.
+exports.fetchFiles = (req, res) => {
+    return; /*
+    Request.destroy({
+        where: {},
+        truncate: false,
+    })
+        .then((nums) => {
+            res.send({
+                message: `${nums} Requests were deleted successfully!`,
+            });
+        })
+        .catch((err) => {
+            res.status(500).send({
+                message:
+                    err.message ||
+                    "Some error occurred while removing all requests.",
             });
         });
     */

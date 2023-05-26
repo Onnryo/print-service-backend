@@ -4,20 +4,17 @@ const Op = db.Sequelize.Op;
 
 // Create and Save a new Batch
 exports.create = (req, res) => {
-    return; /*
     // Validate request
-    if (!req.body.title) {
-        res.status(400).send({
-            message: "Content can not be empty!",
-        });
-        return;
-    }
+
+    const cost = 0.00;
+    const eta = "00:00:00";
+    const status = "Pending";
 
     // Create a Batch
     const batch = {
-        title: req.body.title,
-        description: req.body.description,
-        published: req.body.published ? req.body.published : false,
+        cost: req.body.cost ? req.body.cost : false,
+        eta: req.body.eta ? req.body.eta : false,
+        status: req.body.status ? req.body.status : false,
     };
 
     // Save Batch in the database
@@ -32,14 +29,12 @@ exports.create = (req, res) => {
                     "Some error occurred while creating the Batch.",
             });
         });
-    */
 };
 
 // Retrieve all Batches from the database.
 exports.findAll = (req, res) => {
-    return; /*
-    const title = req.query.title;
-    var condition = title ? { title: { [Op.iLike]: `%${title}%` } } : null;
+    //const title = req.query.title;
+    var condition = null; //title ? { title: { [Op.iLike]: `%${title}%` } } : null;
 
     Batch.findAll({ where: condition })
         .then((data) => {
@@ -52,12 +47,10 @@ exports.findAll = (req, res) => {
                     "Some error occurred while retrieving batches.",
             });
         });
-    */
 };
 
 // Find a single Batch with an id
 exports.findOne = (req, res) => {
-    return; /*
     const id = req.params.id;
 
     Batch.findByPk(id)
@@ -75,12 +68,10 @@ exports.findOne = (req, res) => {
                 message: "Error retrieving Batch with id=" + id,
             });
         });
-    */
 };
 
 // Update a Batch by the id in the request
 exports.update = (req, res) => {
-    return; /*
     const id = req.params.id;
 
     Batch.update(req.body, {
@@ -102,12 +93,10 @@ exports.update = (req, res) => {
                 message: "Error updating Batch with id=" + id,
             });
         });
-    */
 };
 
 // Delete a Batch with the specified id in the request
 exports.delete = (req, res) => {
-    return; /*
     const id = req.params.id;
 
     Batch.destroy({
@@ -129,11 +118,10 @@ exports.delete = (req, res) => {
                 message: "Could not delete Batch with id=" + id,
             });
         });
-    */
 };
 
-// Delete all Batches from the database.
-exports.deleteAll = (req, res) => {
+// Retrieve all Parts from Batch
+exports.fetchParts = (req, res) => {
     return; /*
     Batch.destroy({
         where: {},
@@ -149,23 +137,6 @@ exports.deleteAll = (req, res) => {
                 message:
                     err.message ||
                     "Some error occurred while removing all batches.",
-            });
-        });
-    */
-};
-
-// Find all published Batches
-exports.findAllPublished = (req, res) => {
-    return; /*
-    Batch.findAll({ where: { published: true } })
-        .then((data) => {
-            res.send(data);
-        })
-        .catch((err) => {
-            res.status(500).send({
-                message:
-                    err.message ||
-                    "Some error occurred while retrieving batches.",
             });
         });
     */

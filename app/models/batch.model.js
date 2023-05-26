@@ -4,7 +4,7 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.DECIMAL(10,2),
         },
         eta: {
-            type: Sequelize.TIME,
+            type: Sequelize.STRING,
         },
         status: {
             type: Sequelize.STRING,

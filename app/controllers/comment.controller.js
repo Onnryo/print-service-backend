@@ -4,20 +4,29 @@ const Op = db.Sequelize.Op;
 
 // Create and Save a new Comment
 exports.create = (req, res) => {
-    return; /*
     // Validate request
-    if (!req.body.title) {
+    if (!req.body.text) {
         res.status(400).send({
-            message: "Content can not be empty!",
+            message: "text can not be empty!",
+        });
+        return;
+    } else if (!req.body.userId) {
+        res.status(400).send({
+            message: "userId can not be empty!",
+        });
+        return;
+    } else if (!req.body.requestId) {
+        res.status(400).send({
+            message: "requestId can not be empty!",
         });
         return;
     }
 
     // Create a Comment
     const comment = {
-        title: req.body.title,
-        description: req.body.description,
-        published: req.body.published ? req.body.published : false,
+        text: req.body.text,
+        userId: req.body.userId,
+        requestId: req.body.requestId,
     };
 
     // Save Comment in the database
@@ -32,14 +41,12 @@ exports.create = (req, res) => {
                     "Some error occurred while creating the Comment.",
             });
         });
-    */
 };
 
 // Retrieve all Comments from the database.
 exports.findAll = (req, res) => {
-    return; /*
-    const title = req.query.title;
-    var condition = title ? { title: { [Op.iLike]: `%${title}%` } } : null;
+    const text = req.query.text;
+    var condition = text ? { text: { [Op.iLike]: `%${text}%` } } : null;
 
     Comment.findAll({ where: condition })
         .then((data) => {
@@ -52,12 +59,10 @@ exports.findAll = (req, res) => {
                     "Some error occurred while retrieving comments.",
             });
         });
-    */
 };
 
 // Find a single Comment with an id
 exports.findOne = (req, res) => {
-    return; /*
     const id = req.params.id;
 
     Comment.findByPk(id)
@@ -75,12 +80,10 @@ exports.findOne = (req, res) => {
                 message: "Error retrieving Comment with id=" + id,
             });
         });
-    */
 };
 
 // Update a Comment by the id in the request
 exports.update = (req, res) => {
-    return; /*
     const id = req.params.id;
 
     Comment.update(req.body, {
@@ -102,12 +105,10 @@ exports.update = (req, res) => {
                 message: "Error updating Comment with id=" + id,
             });
         });
-    */
 };
 
 // Delete a Comment with the specified id in the request
 exports.delete = (req, res) => {
-    return; /*
     const id = req.params.id;
 
     Comment.destroy({
@@ -129,44 +130,4 @@ exports.delete = (req, res) => {
                 message: "Could not delete Comment with id=" + id,
             });
         });
-    */
-};
-
-// Delete all Comments from the database.
-exports.deleteAll = (req, res) => {
-    return; /*
-    Comment.destroy({
-        where: {},
-        truncate: false,
-    })
-        .then((nums) => {
-            res.send({
-                message: `${nums} Comments were deleted successfully!`,
-            });
-        })
-        .catch((err) => {
-            res.status(500).send({
-                message:
-                    err.message ||
-                    "Some error occurred while removing all comments.",
-            });
-        });
-    */
-};
-
-// Find all published Comments
-exports.findAllPublished = (req, res) => {
-    return; /*
-    Comment.findAll({ where: { published: true } })
-        .then((data) => {
-            res.send(data);
-        })
-        .catch((err) => {
-            res.status(500).send({
-                message:
-                    err.message ||
-                    "Some error occurred while retrieving comments.",
-            });
-        });
-    */
 };
