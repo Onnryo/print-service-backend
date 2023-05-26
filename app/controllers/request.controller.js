@@ -5,7 +5,7 @@ const Op = db.Sequelize.Op;
 // Create and Save a new Request
 exports.create = (req, res) => {
     // Validate request
-    if (!req.body.title && !req.body.body) {
+    if (!req.body.title || !req.body.body) {
         res.status(400).send({
             message: "title or body can not be empty!",
         });
@@ -15,17 +15,17 @@ exports.create = (req, res) => {
             message: "userId can not be empty!",
         });
         return;
-    }/*else if (req.body.link && isvalidurl?) {
+    } /*else if (req.body.link && isvalidurl?) {
         res.status(400).send({
             message: "Content can not be empty!",
         });
         return;
     }*/
 
-    const estimated_cost = 0.00;
-    const total_cost = 0.00;
-    const estimated_time = "00:00:00"
-    const total_time = "00:00:00"
+    const estimated_cost = 0.0;
+    const total_cost = 0.0;
+    const estimated_time = "00:00:00";
+    const total_time = "00:00:00";
     const status = "Pending";
     const status_history = Date.now().toString() + " - Pending";
 

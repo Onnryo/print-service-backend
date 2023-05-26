@@ -1,6 +1,8 @@
 module.exports = (app) => {
     const files = require("../controllers/file.controller.js");
+    const verifyJWT = require("../middleware/verifyJWT");
 
+    app.use(verifyJWT);
     var router = require("express").Router();
 
     // Retrieve all Files

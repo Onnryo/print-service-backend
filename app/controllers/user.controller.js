@@ -5,7 +5,7 @@ const Op = db.Sequelize.Op;
 // Create and Save a new User
 exports.create = (req, res) => {
     // Validate user
-    if (!req.body.username && !req.body.email && !req.body.password) {
+    if (!req.body.username || !req.body.email || !req.body.password) {
         res.status(400).send({
             message: "username, email, or password can not be empty!",
         });
@@ -17,14 +17,14 @@ exports.create = (req, res) => {
         username: req.body.username,
         email: req.body.email,
         password: req.body.password,
-        role: "USER",
+        role: req.body.role ? req.body.role : "USER",
         balance: 0.0,
     };
 
     // Save User in the database
     User.create(user)
         .then((data) => {
-            //delete data.password;
+            delete data.password;
             res.send(data);
         })
         .catch((err) => {
@@ -39,11 +39,13 @@ exports.create = (req, res) => {
 // Retrieve all Users from the database.
 exports.findAll = (req, res) => {
     const username = req.query.username;
-    var condition = username ? { username: { [Op.iLike]: `%${username}%` } } : null;
-
+    const email = req.query.email;
+    var uniqueUsername = username ? { username: { [Op.like]: `%${username}%` } } : null;
+    var uniqueEmail = email ? { email: { [Op.iLike]: `%${email}%` } } : null;
+    var condition = { ...uniqueEmail, ...uniqueUsername };
     User.findAll({ where: condition })
         .then((data) => {
-            //delete data.password
+            delete data.password
             res.send(data);
         })
         .catch((err) => {
@@ -62,7 +64,7 @@ exports.findOne = (req, res) => {
     User.findByPk(id)
         .then((data) => {
             if (data) {
-                //delete data.password;
+                delete data.password;
                 res.send(data);
             } else {
                 res.status(404).send({

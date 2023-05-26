@@ -1,14 +1,29 @@
 //https://www.bezkoder.com/node-express-sequelize-postgresql/
-require ('dotenv').config();
+require("dotenv").config();
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
+const cookieParser = require("cookie-parser");
+const originsWhitelist = require("./app/config/originsWhitelist");
+const credentials = require("./app/middleware/credentials");
 
 const app = express();
 
 var corsOptions = {
-    origin: "http://localhost:8081",
+    origin: (origin, callback) => {
+        if (originsWhitelist.indexOf(origin) !== -1 || !origin) {
+            callback(null, true);
+        } else {
+            callback(new Error("Not allowed by CORS"));
+        }
+    },
+    optionsSuccessStatus: 200,
 };
+
+//middleware for cookies
+app.use(cookieParser());
+
+app.use(credentials);
 
 app.use(cors(corsOptions));
 

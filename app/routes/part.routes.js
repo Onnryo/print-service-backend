@@ -1,6 +1,8 @@
 module.exports = (app) => {
     const parts = require("../controllers/part.controller.js");
+    const verifyJWT = require("../middleware/verifyJWT");
 
+    app.use(verifyJWT);
     var router = require("express").Router();
 
     // Retrieve all Parts

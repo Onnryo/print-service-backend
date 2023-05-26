@@ -13,7 +13,10 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.STRING,
         },
         balance: {
-            type: Sequelize.DECIMAL(10,2),
+            type: Sequelize.DECIMAL(10, 2),
+        },
+        refresh_token: {
+            type: Sequelize.STRING,
         },
     });
 
