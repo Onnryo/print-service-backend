@@ -1,4 +1,4 @@
-# Print-Service
+# Print-Service Backend
 ## Install Nodejs & npm
 sudo apt install nodejs npm
 node -v
@@ -16,6 +16,8 @@ sudo systemctl start postgresql.service
     - https://youtu.be/favjC6EKFgw?t=3381
 - Define User Roles
 - Blob File Storage
+    - https://stackoverflow.com/questions/51825088/uploading-a-blob-with-nodejs
+    - https://gist.github.com/saumyasuhagiya/bd29a46533a726960c10c79b1b8b4445
 - Filament Profiles
 - Batch Builder
 - Multi-Track Printing

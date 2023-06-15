@@ -1,6 +1,8 @@
 //https://www.bezkoder.com/node-express-sequelize-postgresql/
 require("dotenv").config();
 const express = require("express");
+const https = require("https");
+const fs = require("fs");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
@@ -51,8 +53,13 @@ require("./app/routes/file.routes")(app);
 require("./app/routes/comment.routes")(app);
 require("./app/routes/batch.routes")(app);
 
+const httpsServer = https.createServer({
+    key: fs.readFileSync(process.env.KEYPATH),
+    cert: fs.readFileSync(process.env.CERTPATH),
+}, app);
+
 // set port, listen for requests
-const PORT = process.env.PORT || 8080;
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}.`);
+const PORT = process.env.PORT || 4000;
+httpsServer.listen(PORT, () => {
+    console.log(`HTTPS Server is running on port ${PORT}.`);
 });

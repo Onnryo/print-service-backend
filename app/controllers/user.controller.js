@@ -40,12 +40,15 @@ exports.create = (req, res) => {
 exports.findAll = (req, res) => {
     const username = req.query.username;
     const email = req.query.email;
-    var uniqueUsername = username ? { username: { [Op.like]: `%${username}%` } } : null;
+    var uniqueUsername = username
+        ? { username: { [Op.like]: `%${username}%` } }
+        : null;
     var uniqueEmail = email ? { email: { [Op.iLike]: `%${email}%` } } : null;
     var condition = { ...uniqueEmail, ...uniqueUsername };
     User.findAll({ where: condition })
         .then((data) => {
-            delete data.password
+            delete data.password;
+            delete data.refresh_token;
             res.send(data);
         })
         .catch((err) => {
@@ -65,6 +68,7 @@ exports.findOne = (req, res) => {
         .then((data) => {
             if (data) {
                 delete data.password;
+                delete data.refresh_token;
                 res.send(data);
             } else {
                 res.status(404).send({

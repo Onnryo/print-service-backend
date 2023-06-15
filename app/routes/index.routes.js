@@ -25,5 +25,5 @@ module.exports = (app) => {
         res.json({ message: "TODO" });
     });
 
-    app.use("/api", router);
+    app.use("/", router);
 };

@@ -22,5 +22,5 @@ module.exports = (app) => {
     // Retrieve all Files for Request
     router.get("/:id/files", requests.fetchFiles);
 
-    app.use("/api/requests", router);
+    app.use("/requests", router);
 };

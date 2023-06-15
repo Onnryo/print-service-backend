@@ -113,12 +113,20 @@ exports.login = (req, res) => {
 
             // Create JWTs
             const accessToken = jwt.sign(
-                { username: data[0].username },
+                {
+                    id: data[0].id,
+                    username: data[0].username,
+                    role: data[0].role,
+                },
                 process.env.ACCESS_TOKEN_SECRET,
                 { expiresIn: "5m" }
             );
             const refreshToken = jwt.sign(
-                { username: data[0].username },
+                {
+                    id: data[0].id,
+                    username: data[0].username,
+                    role: data[0].role,
+                },
                 process.env.REFRESH_TOKEN_SECRET,
                 { expiresIn: "1d" }
             );
@@ -136,10 +144,14 @@ exports.login = (req, res) => {
                         res.cookie("jwt", refreshToken, {
                             httpOnly: true,
                             sameSite: "None",
+                            secure: true,
                             //secure: true,
                             maxAge: 24 * 60 * 60 * 1000,
                         });
-                        res.status(200).send({ accessToken });
+                        const payload = {
+                            accessToken,
+                        };
+                        res.status(200).send(payload);
                         return;
                     } else {
                         res.send({
@@ -186,11 +198,16 @@ exports.refreshToken = (req, res) => {
                     if (err || data[0].username !== decoded.username)
                         return res.sendStatus(403);
                     const accessToken = jwt.sign(
-                        { username: decoded.username },
+                        {
+                            id: data[0].id,
+                            username: data[0].username,
+                            role: data[0].role,
+                        },
                         process.env.ACCESS_TOKEN_SECRET,
                         { expiresIn: "5m" }
                     );
-                    res.status(200).send({ accessToken });
+                    const payload = { accessToken };
+                    res.status(200).send(payload);
                 }
             );
         })

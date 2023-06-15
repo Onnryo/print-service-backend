@@ -18,5 +18,5 @@ module.exports = (app) => {
     // Retrieve all Requests for User
     router.get("/:id/requests", users.fetchRequests);
 
-    app.use("/api/users", router);
+    app.use("/users", router);
 };

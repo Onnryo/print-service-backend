@@ -18,5 +18,5 @@ module.exports = (app) => {
     // Retrieve all Requests for Batch
     router.get("/:id/parts", batches.fetchParts);
 
-    app.use("/api/batches", router);
+    app.use("/batches", router);
 };
