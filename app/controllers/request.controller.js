@@ -1,60 +1,72 @@
 const db = require("../models");
 const Request = db.requests;
 const Op = db.Sequelize.Op;
+const multer = require("multer");
+
+// Set up multer middleware
+const upload = multer().none();
 
 // Create and Save a new Request
 exports.create = (req, res) => {
-    // Validate request
-    if (!req.body.title || !req.body.body) {
-        res.status(400).send({
-            message: "title or body can not be empty!",
-        });
-        return;
-    } else if (!req.body.userId) {
-        res.status(400).send({
-            message: "userId can not be empty!",
-        });
-        return;
-    } /*else if (req.body.link && isvalidurl?) {
-        res.status(400).send({
-            message: "Content can not be empty!",
-        });
-        return;
-    }*/
-
-    const estimated_cost = 0.0;
-    const total_cost = 0.0;
-    const estimated_time = "00:00:00";
-    const total_time = "00:00:00";
-    const status = "Pending";
-    const status_history = Date.now().toString() + " - Pending";
-
-    // Create a Request
-    const request = {
-        title: req.body.title,
-        body: req.body.body,
-        link: req.body.link ? req.body.link : null,
-        estimated_cost: estimated_cost,
-        total_cost: total_cost,
-        estimated_time: estimated_time,
-        total_time: total_time,
-        status: status,
-        status_history: status_history,
-        userId: req.body.userId,
-    };
-
-    // Save Request in the database
-    Request.create(request)
-        .then((data) => {
-            res.send(data);
-        })
-        .catch((err) => {
+    // Invoke the multer middleware
+    upload(req, res, (err) => {
+        if (err) {
             res.status(500).send({
-                message:
-                    err.message ||
-                    "Some error occurred while creating the Request.",
+                message: "Error occurred while processing form data.",
             });
-        });
+            return;
+        }
+
+        // Access form data properties
+        const { title, body, link, userId } = req.body;
+
+        // Validate request
+        if (!title || !body) {
+            res.status(400).send({
+                message: "title or body cannot be empty!",
+            });
+            return;
+        } else if (!userId) {
+            res.status(400).send({
+                message: "userId cannot be empty!",
+            });
+            return;
+        }
+
+        // Create a Request
+        const estimated_cost = 0.0;
+        const total_cost = 0.0;
+        const estimated_time = "00:00:00";
+        const total_time = "00:00:00";
+        const status = "Pending";
+        const status_history = Date.now().toString() + " - Pending";
+
+        const request = {
+            title,
+            body,
+            link: link ? link : null,
+            estimated_cost,
+            total_cost,
+            estimated_time,
+            total_time,
+            status,
+            status_history,
+            userId,
+        };
+
+        // Save Request in the database
+        Request.create(request)
+            .then((data) => {
+                res.send(data);
+            })
+            .catch((err) => {
+                res.status(500).send({
+                    message:
+                        err.message ||
+                        "Some error occurred while creating the Request.",
+                });
+            });
+    });
 };
 
 // Retrieve all Requests from the database.
@@ -170,44 +182,44 @@ exports.fetchParts = (req, res) => {
 
 // Retrieve all Comments from Request.
 exports.fetchComments = (req, res) => {
-    return; /*
-    Request.destroy({
-        where: {},
-        truncate: false,
-    })
-        .then((nums) => {
-            res.send({
-                message: `${nums} Requests were deleted successfully!`,
-            });
+    const requestId = req.params.id;
+
+    Request.findByPk(requestId, { include: "comments" })
+        .then((data) => {
+            if (data) {
+                res.send(data.comments);
+            } else {
+                res.status(404).send({
+                    message: `Cannot find Request with id=${requestId}.`,
+                });
+            }
         })
         .catch((err) => {
             res.status(500).send({
                 message:
-                    err.message ||
-                    "Some error occurred while removing all requests.",
+                    "Error retrieving Comments for Request with id=" +
+                    requestId,
             });
         });
-    */
 };
 
 // Retrieve all Files from Request.
 exports.fetchFiles = (req, res) => {
-    return; /*
-    Request.destroy({
-        where: {},
-        truncate: false,
-    })
-        .then((nums) => {
-            res.send({
-                message: `${nums} Requests were deleted successfully!`,
-            });
-        })
-        .catch((err) => {
-            res.status(500).send({
-                message:
-                    err.message ||
-                    "Some error occurred while removing all requests.",
-            });
+    const requestId = req.params.id;
+  
+    Request.findByPk(requestId, { include: "files" })
+      .then((data) => {
+        if (data) {
+          res.send(data.files);
+        } else {
+          res.status(404).send({
+            message: `Cannot find Request with id=${requestId}.`,
+          });
+        }
+      })
+      .catch((err) => {
+        res.status(500).send({
+          message: "Error retrieving Files for Request with id=" + requestId,
         });
-    */
-};
+      });
+  };

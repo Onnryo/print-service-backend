@@ -7,7 +7,7 @@ exports.create = (req, res) => {
     // Validate user
     if (!req.body.username || !req.body.email || !req.body.password) {
         res.status(400).send({
-            message: "username, email, or password can not be empty!",
+            message: "Username, email, or password cannot be empty.",
         });
         return;
     }
@@ -30,8 +30,7 @@ exports.create = (req, res) => {
         .catch((err) => {
             res.status(500).send({
                 message:
-                    err.message ||
-                    "Some error occurred while creating the User.",
+                    err.message || "Error occurred while creating the User.",
             });
         });
 };
@@ -93,11 +92,11 @@ exports.update = (req, res) => {
         .then((num) => {
             if (num == 1) {
                 res.send({
-                    message: "User was updated successfully.",
+                    message: "User updated successfully.",
                 });
             } else {
                 res.send({
-                    message: `Cannot update User with id=${id}. Maybe User was not found or req.body is empty!`,
+                    message: `Cannot update User with id=${id}. Maybe User was not found or req.body is empty.`,
                 });
             }
         })
@@ -118,11 +117,11 @@ exports.delete = (req, res) => {
         .then((num) => {
             if (num == 1) {
                 res.send({
-                    message: "User was deleted successfully!",
+                    message: "User deleted successfully.",
                 });
             } else {
                 res.send({
-                    message: `Cannot delete User with id=${id}. Maybe User was not found!`,
+                    message: `Cannot delete User with id=${id}. Maybe User was not found.`,
                 });
             }
         })
@@ -135,22 +134,29 @@ exports.delete = (req, res) => {
 
 // Retrieve all Requests from User.
 exports.fetchRequests = (req, res) => {
-    return; /*
-    User.destroy({
-        where: {},
-        truncate: false,
-    })
-        .then((nums) => {
-            res.send({
-                message: `${nums} Users were deleted successfully!`,
-            });
+    const userId = req.params.id; // Assuming the user ID is passed as a parameter
+
+    User.findByPk(userId)
+        .then((user) => {
+            if (!user) {
+                return res.status(404).send({
+                    message: `User not found with id=${userId}.`,
+                });
+            }
+
+            user.getRequests()
+                .then((requests) => {
+                    res.send(requests);
+                })
+                .catch((err) => {
+                    res.status(500).send({
+                        message: err.message || "Error retrieving requests.",
+                    });
+                });
         })
         .catch((err) => {
             res.status(500).send({
-                message:
-                    err.message ||
-                    "Some error occurred while removing all users.",
+                message: `Error retrieving User with id=${userId}.`,
             });
         });
-    */
 };

@@ -5,10 +5,9 @@ module.exports = (sequelize, Sequelize) => {
         },
         type: {
             type: Sequelize.STRING,
-            allowNull: false
         },
-        data: {
-            type: Sequelize.BLOB("long")
+        path: {
+            type: Sequelize.STRING,
         }
     });
 
